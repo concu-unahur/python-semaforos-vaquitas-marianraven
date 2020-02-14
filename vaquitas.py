@@ -5,6 +5,7 @@ import threading
 
 inicioPuente = 10
 largoPuente = 20
+semaphoro2 = threading.Semaphore(1)
 
 class Vaca(threading.Thread):
   def __init__(self):
@@ -13,16 +14,24 @@ class Vaca(threading.Thread):
     self.velocidad = random.uniform(0.1, 0.5)
 
   def avanzar(self):
-    time.sleep(self.velocidad)
-    self.posicion += 1
+    try:
+      time.sleep(self.velocidad)
+      self.posicion += 1
+    finally:
+      if self.posicion == largoPuente+inicioPuente:
+        semaphoro2.release()
 
   def dibujar(self):
     print(' ' * self.posicion + "🐮")
 
   def run(self):
+    semaphoro2.acquire()
     while(True):
+      
+       #cuando esa vaca llegue al inicio puente + largo puente mas uno
       self.avanzar()
-
+    
+     
 vacas = []
 for i in range(5):
   v = Vaca()
@@ -36,11 +45,13 @@ def dibujarPuente():
   print(' ' * inicioPuente + '=' * largoPuente)
 
 while(True):
-  cls()
-  print('Apretá Ctrl + C varias veces para salir...')
-  print()
-  dibujarPuente()
-  for v in vacas:
-    v.dibujar()
-  dibujarPuente()
-  time.sleep(0.2)
+  
+     cls()
+     print('Apretá Ctrl + C varias veces para salir...')
+     print()
+     dibujarPuente()
+     for v in vacas:
+      v.dibujar()
+     dibujarPuente()
+     time.sleep(0.2)
+     
