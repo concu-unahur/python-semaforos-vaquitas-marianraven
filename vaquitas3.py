@@ -5,7 +5,7 @@ import threading
 
 inicioPuente = 10
 largoPuente = 20
-semaphoro2 = threading.Semaphore(1)
+semaphoro2 = threading.Semaphore(5)
 
 class Vaca(threading.Thread):
   def __init__(self):
@@ -31,7 +31,7 @@ class Vaca(threading.Thread):
     
      
 vacas = []
-for i in range(5):
+for i in range(12):
   v = Vaca()
   vacas.append(v)
   v.start()
